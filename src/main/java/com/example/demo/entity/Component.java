@@ -1,18 +1,18 @@
 package com.example.demo.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -32,29 +32,26 @@ public class Component {
 	@Size(max = 50)
 	private String description;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "Component_Product", joinColumns = { @JoinColumn(name = "componentId") }, inverseJoinColumns = {
-			@JoinColumn(name = "productId") })
-	private Set<Product> product = new HashSet<>();
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "component")
-	private Set<Supplier> supplier = new HashSet<>();
+	@ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="product_id", referencedColumnName="productId")
+	private Product product;
+	
+	@ManyToMany(mappedBy="component")
+	private List<Supplier> supplier=new ArrayList<>();
+	
+	public Component() {
+		
+		
+	}
 
-	public Component(Integer componentId, @NotBlank @Pattern(regexp = "^[a-zA-Z 0-9]*$") String componentName,
+	public Component( @NotBlank @Pattern(regexp = "^[a-zA-Z 0-9]*$") String componentName,
 			@NotBlank @Size(max = 50) String description) {
 		super();
-		this.componentId = componentId;
 		this.componentName = componentName;
 		this.description = description;
 	}
 
-	public Integer getComponentId() {
-		return componentId;
-	}
-
-	public void setComponentId(Integer componentId) {
-		this.componentId = componentId;
-	}
 
 	public String getComponentName() {
 		return componentName;
@@ -72,20 +69,26 @@ public class Component {
 		this.description = description;
 	}
 
-	public Set<Product> getProduct() {
+	public Product getProduct() {
 		return product;
 	}
 
-	public void setProduct(Set<Product> product) {
+	public void setProduct(Product product) {
 		this.product = product;
 	}
 
-	public Set<Supplier> getSupplier() {
+	public List<Supplier> getSupplier() {
 		return supplier;
 	}
 
-	public void setSupplier(Set<Supplier> supplier) {
+	public void setSupplier(List<Supplier> supplier) {
 		this.supplier = supplier;
 	}
+
+
+
+	
+
+	
 
 }

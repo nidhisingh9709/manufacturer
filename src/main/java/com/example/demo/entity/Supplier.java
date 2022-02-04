@@ -1,7 +1,8 @@
 package com.example.demo.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -26,27 +27,28 @@ public class Supplier {
 	@Pattern(regexp = "^[a-zA-Z ]*$")
 	private String supplierName;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "Supplier_component", joinColumns = { @JoinColumn(name = "supplierId") }, inverseJoinColumns = {
-			@JoinColumn(name = "componentId") })
-	private Set<Component> component = new HashSet<>();
+	@ManyToMany(fetch= FetchType.LAZY,cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "supplier_component", joinColumns = { @JoinColumn(name = "supplier_id") }, 
+	inverseJoinColumns = {
+			@JoinColumn(name = "component_id") 
+			})
+	private List<Component> component= new ArrayList<>();
 
 	public Supplier() {
 
 	}
 
-	public Supplier(Integer supplierId, @NotBlank @Pattern(regexp = "^[a-zA-Z ]*$") String supplierName) {
+	public Supplier( @NotBlank @Pattern(regexp = "^[a-zA-Z ]*$") String supplierName) {
 		super();
-		this.supplierId = supplierId;
+		
 		this.supplierName = supplierName;
 	}
-
-	public Integer getSupplierId() {
-		return supplierId;
+	public void addComponent(Component components) {
+		component.add(components);
 	}
 
-	public void setSupplierId(Integer supplierId) {
-		this.supplierId = supplierId;
+	public int getSuuplierId() {
+		return supplierId;
 	}
 
 	public String getSupplierName() {
@@ -57,12 +59,9 @@ public class Supplier {
 		this.supplierName = supplierName;
 	}
 
-	public Set<Component> getComponent() {
+	public List<Component> getComponent() {
 		return component;
 	}
 
-	public void setComponent(Set<Component> component) {
-		this.component = component;
-	}
 
 }

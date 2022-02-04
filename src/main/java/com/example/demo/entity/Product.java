@@ -10,7 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -21,7 +21,7 @@ import org.hibernate.validator.constraints.Range;
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer product_id;
+	private Integer productId;
 
 	@NotBlank
 	@Size(max = 15)
@@ -37,24 +37,17 @@ public class Product {
 
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "product")
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy="product")
 	private Set<Component> component = new HashSet<>();
 
-	public Product(Integer product_id, @NotBlank @Size(max = 15) String productName,
+	public Product( @NotBlank @Size(max = 15) String productName,
 			@Pattern(regexp = "^[0-9]*$") @Range(min = 1, max = 100) String quantityOnHand) {
 		super();
-		this.product_id = product_id;
 		this.productName = productName;
 		this.quantityOnHand = quantityOnHand;
 	}
 
-	public Integer getProduct_id() {
-		return product_id;
-	}
-
-	public void setProduct_id(Integer product_id) {
-		this.product_id = product_id;
-	}
+	
 
 	public String getProductName() {
 		return productName;
