@@ -1,7 +1,5 @@
 package com.example.demo.entity;
 
-
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -32,26 +30,46 @@ public class Component {
 	@Size(max = 50)
 	private String description;
 
+	private String supplierName;
 
-	@ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="product_id", referencedColumnName="productId")
-	private Product product;
-	
-	@ManyToMany(mappedBy="component")
-	private List<Supplier> supplier=new ArrayList<>();
-	
-	public Component() {
-		
-		
+	public String getSupplierName() {
+		return supplierName;
 	}
 
-	public Component( @NotBlank @Pattern(regexp = "^[a-zA-Z 0-9]*$") String componentName,
-			@NotBlank @Size(max = 50) String description) {
+	public void setSupplierName(String supplierName) {
+		this.supplierName = supplierName;
+	}
+
+	public String getProductAssociated() {
+		return productAssociated;
+	}
+
+	public void setProductAssociated(String productAssociated) {
+		this.productAssociated = productAssociated;
+	}
+
+	private String productAssociated;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "product_id", referencedColumnName = "productId")
+	private Product product;
+
+	@ManyToMany(mappedBy = "component")
+	private List<Supplier> supplier;
+
+	public Component() {
+
+	}
+
+	public Component(@NotBlank @Pattern(regexp = "^[a-zA-Z 0-9]*$") String componentName,
+			@Size(max = 50) String description, String supplierName, String productAssociated, Product product) {
 		super();
 		this.componentName = componentName;
 		this.description = description;
+		this.supplierName = supplierName;
+		this.productAssociated = productAssociated;
+		this.product = product;
 	}
-
 
 	public String getComponentName() {
 		return componentName;
@@ -84,11 +102,5 @@ public class Component {
 	public void setSupplier(List<Supplier> supplier) {
 		this.supplier = supplier;
 	}
-
-
-
-	
-
-	
 
 }

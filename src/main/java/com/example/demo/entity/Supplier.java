@@ -1,8 +1,6 @@
 package com.example.demo.entity;
 
-import java.util.ArrayList;
 import java.util.List;
-
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -28,11 +26,11 @@ public class Supplier {
 	private String supplierName;
 
 	@ManyToMany(fetch= FetchType.LAZY,cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "supplier_component", joinColumns = { @JoinColumn(name = "supplier_id") }, 
+	@JoinTable(name = "supplier_component", joinColumns = { @JoinColumn(name = "supplier_id",referencedColumnName = "supplierId") }, 
 	inverseJoinColumns = {
-			@JoinColumn(name = "component_id") 
+			@JoinColumn(name = "component_id",referencedColumnName = "componentId") 
 			})
-	private List<Component> component= new ArrayList<>();
+	private List<Component> component;
 
 	public Supplier() {
 
@@ -49,6 +47,10 @@ public class Supplier {
 
 	public int getSuuplierId() {
 		return supplierId;
+	}
+
+	public void setSupplierId(Integer supplierId) {
+		this.supplierId = supplierId;
 	}
 
 	public String getSupplierName() {

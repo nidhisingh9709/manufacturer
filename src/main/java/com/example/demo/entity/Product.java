@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -37,17 +36,15 @@ public class Product {
 
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy="product")
-	private Set<Component> component = new HashSet<>();
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "product")
+	private List<Component> component;
 
-	public Product( @NotBlank @Size(max = 15) String productName,
+	public Product(@NotBlank @Size(max = 15) String productName,
 			@Pattern(regexp = "^[0-9]*$") @Range(min = 1, max = 100) String quantityOnHand) {
 		super();
 		this.productName = productName;
 		this.quantityOnHand = quantityOnHand;
 	}
-
-	
 
 	public String getProductName() {
 		return productName;
@@ -65,11 +62,11 @@ public class Product {
 		this.quantityOnHand = quantityOnHand;
 	}
 
-	public Set<Component> getComponent() {
+	public List<Component> getComponent() {
 		return component;
 	}
 
-	public void setComponent(Set<Component> component) {
+	public void setComponent(List<Component> component) {
 		this.component = component;
 	}
 
